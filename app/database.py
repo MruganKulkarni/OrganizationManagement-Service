@@ -95,6 +95,13 @@ class DatabaseManager:
     def health_check(self) -> dict:
         """Perform database health check."""
         try:
+            # Check if client and database are properly initialized
+            if self.client is None or self.master_db is None:
+                return {
+                    "status": "unhealthy",
+                    "error": "Database not connected"
+                }
+            
             # Ping the database
             self.client.admin.command('ping')
             
