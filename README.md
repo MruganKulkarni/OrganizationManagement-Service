@@ -123,19 +123,31 @@ ENVIRONMENT=development
 
 **For macOS:**
 ```bash
+# If installed via Homebrew:
 brew services start mongodb-community
+
+# If installed manually or brew command doesn't work:
+mongod
+
+# Alternative: specify data directory
+mongod --dbpath /usr/local/var/mongodb
 ```
 
 **For Windows:**
 ```bash
 # Start MongoDB service from Services panel or command line
 net start MongoDB
+
+# Alternative: run MongoDB directly
+mongod
 ```
 
 **Using Docker (All platforms):**
 ```bash
 docker run -d --name mongodb -p 27017:27017 mongo:6.0
 ```
+
+**Note:** If `brew services start mongodb-community` doesn't work, it likely means MongoDB wasn't installed via Homebrew. Use the `mongod` command instead.
 
 ### Step 6: Run the Application
 
