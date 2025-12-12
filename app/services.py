@@ -27,7 +27,7 @@ class OrganizationService:
             # Check if organization already exists
             org_collection = db_manager.get_organizations_collection()
             existing_org = org_collection.find_one({
-                "organization_name": org_data.organization_name
+                "organization_name": org_data.organization_name.lower()
             })
             
             if existing_org:
@@ -47,8 +47,8 @@ class OrganizationService:
                 )
             
             # Create organization collection
-            collection_name = f"org_{org_data.organization_name}"
-            org_db_collection = db_manager.create_organization_collection(org_data.organization_name)
+            collection_name = f"org_{org_data.organization_name.lower()}"
+            org_db_collection = db_manager.create_organization_collection(org_data.organization_name.lower())
             
             # Create admin user
             admin_id = ObjectId()
@@ -69,7 +69,7 @@ class OrganizationService:
             org_id = ObjectId()
             organization = {
                 "_id": org_id,
-                "organization_name": org_data.organization_name,
+                "organization_name": org_data.organization_name.lower(),
                 "collection_name": collection_name,
                 "admin_user_id": str(admin_id),
                 "created_at": datetime.utcnow(),

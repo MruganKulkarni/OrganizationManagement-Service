@@ -7,6 +7,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.database import db_manager
 from app.routers import organizations, auth, health, analytics
@@ -40,16 +42,30 @@ async def lifespan(app: FastAPI):
     logger.info("Database connection closed")
 
 
-# Create FastAPI application
+# Create FastAPI application with enhanced documentation
 app = FastAPI(
     title=settings.api_title,
-    description=settings.api_description,
+    description="Multi-tenant organization management system with secure authentication and dynamic data isolation.",
     version=settings.api_version,
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json",
+    contact={
+        "name": "Organization Management Service",
+        "url": "https://github.com/MruganKulkarni/OrganizationManagement-Service",
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT",
+    },
+    swagger_ui_parameters={
+        "customCssUrl": "/static/custom.css"
+    }
 )
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Add custom middleware
 app.add_middleware(RequestLoggingMiddleware)

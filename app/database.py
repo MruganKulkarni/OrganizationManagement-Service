@@ -62,12 +62,18 @@ class DatabaseManager:
         collection = self.get_master_db()[collection_name]
         
         # Initialize with a basic document to ensure collection creation
-        collection.insert_one({
-            "_id": "metadata",
-            "organization_name": org_name,
-            "created_at": None,  # Will be set by the service
-            "schema_version": "1.0"
-        })
+        # Use upsert to avoid duplicate key errors
+        collection.update_one(
+            {"_id": "metadata"},
+            {
+                "$set": {
+                    "organization_name": org_name,
+                    "created_at": None,  # Will be set by the service
+                    "schema_version": "1.0"
+                }
+            },
+            upsert=True
+        )
         
         logger.info(f"Created organization collection: {collection_name}")
         return collection

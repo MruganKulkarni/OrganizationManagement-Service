@@ -8,6 +8,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from bson import ObjectId
 from app.config import settings
 from app.database import db_manager
 
@@ -114,7 +115,7 @@ class AuthManager:
             # Verify admin still exists and is active
             admin_collection = db_manager.get_admin_users_collection()
             admin_user = admin_collection.find_one({
-                "_id": admin_id,
+                "_id": ObjectId(admin_id),
                 "is_active": True
             })
             

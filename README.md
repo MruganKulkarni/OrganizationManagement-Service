@@ -1,98 +1,84 @@
 # Organization Management Service
 
-A multi-tenant organization management system built with FastAPI and MongoDB. This service handles organization lifecycle management with dynamic database collections and secure authentication.
+A multi-tenant organization management system built with FastAPI and MongoDB. This service provides REST APIs for creating and managing organizations with secure authentication and dynamic data isolation.
 
-## Overview
+## Features
 
-This project implements a complete backend service for managing organizations in a multi-tenant architecture. Each organization gets its own dedicated MongoDB collection, and the system maintains a master database for global metadata and user management.
-
-## Key Features
-
-- Dynamic MongoDB collection creation for each organization
+- Multi-tenant architecture with dynamic MongoDB collections
 - JWT-based authentication with bcrypt password hashing
-- Automatic data migration when organizations are updated
-- Real-time analytics and monitoring dashboard
-- Comprehensive audit logging
-- Production-ready Docker configuration
-- Complete API documentation with Swagger UI
+- Complete CRUD operations for organization management
+- Input validation and comprehensive error handling
+- Interactive API documentation with Swagger UI
+- Health monitoring and system statistics
+- Audit logging for all operations
+- Rate limiting and CORS support
 
 ## Technology Stack
 
-- **Backend Framework**: FastAPI (Python 3.9+)
-- **Database**: MongoDB with dynamic collections
-- **Authentication**: JWT tokens with bcrypt hashing
-- **Validation**: Pydantic models
-- **Documentation**: OpenAPI/Swagger auto-generation
-- **Deployment**: Docker and Docker Compose
+- Backend: FastAPI (Python 3.8+)
+- Database: MongoDB
+- Authentication: JWT tokens with bcrypt
+- Documentation: Swagger/OpenAPI
+- Validation: Pydantic models
+- Testing: Pytest
+- Containerization: Docker
 
-## API Endpoints
+## Prerequisites
 
-### Organization Management
-- `POST /org/create` - Create new organization
-- `GET /org/get` - Get organization details
-- `PUT /org/update` - Update organization with data migration
-- `DELETE /org/delete` - Delete organization and cleanup data
-
-### Authentication
-- `POST /admin/login` - Admin login with JWT token response
-
-### Analytics & Monitoring
-- `GET /analytics/dashboard` - Organization dashboard metrics
-- `GET /analytics/system` - System-wide statistics
-- `GET /health` - Health check endpoint
-
-## Getting Started
-
-### Prerequisites
-- Python 3.9 or higher
+### System Requirements
+- Python 3.8 or higher
 - MongoDB 4.4 or higher
 - Git
 
-### Installation
+### For macOS Users
+```bash
+# Install Python (if not already installed)
+brew install python
 
-1. Clone the repository:
+# Install MongoDB
+brew tap mongodb/brew
+brew install mongodb-community
+```
+
+### For Windows Users
+1. Download and install Python from https://python.org/downloads/
+2. Download and install MongoDB from https://www.mongodb.com/try/download/community
+3. Install Git from https://git-scm.com/download/win
+
+## Installation
+
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/MruganKulkarni/OrganizationManagement-Service.git
 cd OrganizationManagement-Service
 ```
 
-2. Create and activate virtual environment:
+### Step 2: Create Virtual Environment
+
+**For macOS/Linux:**
 ```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-3. Install dependencies:
+**For Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### Step 3: Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Set up environment configuration:
+### Step 4: Configure Environment
 ```bash
 cp .env.example .env
-# Edit .env file with your MongoDB connection string
 ```
 
-5. Start the application:
-```bash
-uvicorn app.main:app --reload
+Edit the `.env` file with your configuration:
 ```
-
-The API will be available at `http://localhost:8000` with interactive documentation at `http://localhost:8000/docs`.
-
-### Docker Setup
-
-For containerized deployment:
-
-```bash
-docker-compose up --build
-```
-
-## Configuration
-
-The application uses environment variables for configuration. Key settings include:
-
-```env
 MONGODB_URL=mongodb://localhost:27017
 DATABASE_NAME=org_master_db
 JWT_SECRET_KEY=your-secret-key-here
@@ -100,72 +86,236 @@ JWT_EXPIRE_MINUTES=30
 ENVIRONMENT=development
 ```
 
-## Database Architecture
+### Step 5: Start MongoDB
 
-The system uses a master database approach:
-
-- **Master Database**: Stores organization metadata, admin users, and audit logs
-- **Dynamic Collections**: Each organization gets a dedicated collection (`org_organizationname`)
-- **Automatic Migration**: Data is automatically migrated when organization names change
-
-## Testing
-
-Run the test suite:
-
+**For macOS:**
 ```bash
-# Integration tests
-python test_integration.py
-
-# Full API workflow tests
-python test_comprehensive.py
+brew services start mongodb-community
 ```
 
-## Example Usage
+**For Windows:**
+```bash
+# Start MongoDB service from Services panel or command line
+net start MongoDB
+```
 
-Create an organization:
+**Using Docker (All platforms):**
+```bash
+docker run -d --name mongodb -p 27017:27017 mongo:6.0
+```
+
+### Step 6: Run the Application
+
+**For macOS/Linux:**
+```bash
+python3 -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**For Windows:**
+```bash
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Step 7: Access the Application
+- API Documentation: http://localhost:8000/docs
+- Health Check: http://localhost:8000/health
+- API Info: http://localhost:8000/info
+
+## API Endpoints
+
+### Organization Management
+- `POST /org/create` - Create new organization
+- `GET /org/get` - Retrieve organization details
+- `PUT /org/update` - Update organization
+- `DELETE /org/delete` - Delete organization
+- `GET /org/stats` - Get system statistics
+
+### Authentication
+- `POST /admin/login` - Admin login
+- `GET /admin/profile` - Get admin profile
+- `POST /admin/logout` - Admin logout
+
+### Health Monitoring
+- `GET /health` - System health status
+- `GET /ping` - Basic connectivity test
+- `GET /version` - API version information
+
+## Usage Guide
+
+### Testing with Swagger UI
+
+1. Open http://localhost:8000/docs in your browser
+2. Test the health endpoint first: `GET /health`
+3. Create an organization using `POST /org/create`:
+   ```json
+   {
+     "organization_name": "mycompany",
+     "email": "admin@mycompany.com",
+     "password": "SecurePass123!"
+   }
+   ```
+4. Login using `POST /admin/login` with the same credentials
+5. Copy the access token from the response
+6. Click "Authorize" button and enter: `Bearer YOUR_ACCESS_TOKEN`
+7. Test protected endpoints like `GET /admin/profile`
+
+### Command Line Examples
+
+**Create Organization:**
 ```bash
 curl -X POST "http://localhost:8000/org/create" \
   -H "Content-Type: application/json" \
   -d '{
-    "organization_name": "my_company",
-    "email": "admin@mycompany.com",
-    "password": "SecurePassword123!"
+    "organization_name": "testcompany",
+    "email": "admin@testcompany.com",
+    "password": "SecurePass123!"
   }'
 ```
 
-Login as admin:
+**Admin Login:**
 ```bash
 curl -X POST "http://localhost:8000/admin/login" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@mycompany.com",
-    "password": "SecurePassword123!"
+    "email": "admin@testcompany.com",
+    "password": "SecurePass123!"
   }'
 ```
 
-## Documentation
+**Get Organization:**
+```bash
+curl -X GET "http://localhost:8000/org/get?organization_name=testcompany"
+```
 
-- `docs/API_EXAMPLES.md` - Comprehensive API usage examples
-- `docs/DEPLOYMENT.md` - Production deployment guide
-- `DEPLOYMENT_CHECKLIST.md` - Production readiness checklist
-- `QUICK_START.md` - Quick setup guide
+## Testing
 
-## Security Features
+### Automated Tests
+```bash
+# Activate virtual environment first
+source venv/bin/activate  # macOS/Linux
+# or
+venv\Scripts\activate     # Windows
 
-- Password strength validation with detailed feedback
-- JWT token authentication with configurable expiration
-- Request rate limiting and security headers
-- Input validation and sanitization
-- Complete audit trail logging
+# Run integration tests
+python test_integration.py
+
+# Run comprehensive tests
+python test_comprehensive.py
+
+# Run verification tests
+python test_complete_verification.py
+```
+
+### Manual Testing
+Use the Swagger UI at http://localhost:8000/docs for interactive testing of all endpoints.
+
+## Docker Deployment
+
+### Using Docker Compose
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Building Docker Image
+```bash
+# Build the image
+docker build -t org-management-service .
+
+# Run the container
+docker run -d -p 8000:8000 --name org-service org-management-service
+```
+
+## Configuration Options
+
+### Environment Variables
+- `MONGODB_URL`: MongoDB connection string (default: mongodb://localhost:27017)
+- `DATABASE_NAME`: Database name (default: org_master_db)
+- `JWT_SECRET_KEY`: Secret key for JWT tokens
+- `JWT_EXPIRE_MINUTES`: Token expiration time (default: 30)
+- `ENVIRONMENT`: Application environment (development/production)
+- `LOG_LEVEL`: Logging level (default: INFO)
+
+### Security Settings
+- JWT tokens expire in 30 minutes
+- Passwords require uppercase, lowercase, numbers, and special characters
+- Rate limiting: 100 requests per minute per IP
+- CORS enabled for specified origins
+
+## Project Structure
+
+```
+app/
+├── main.py              # FastAPI application entry point
+├── config.py            # Configuration management
+├── database.py          # MongoDB connection and operations
+├── auth.py              # Authentication and JWT handling
+├── models.py            # Pydantic data models
+├── services.py          # Business logic layer
+├── middleware.py        # Custom middleware components
+├── utils.py             # Utility functions
+└── routers/
+    ├── organizations.py # Organization CRUD endpoints
+    ├── auth.py          # Authentication endpoints
+    ├── health.py        # Health monitoring endpoints
+    └── analytics.py     # Analytics and statistics
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**MongoDB Connection Error:**
+- Ensure MongoDB is running
+- Check connection string in .env file
+- Verify MongoDB port (default: 27017)
+
+**Port Already in Use:**
+- Change port in uvicorn command: `--port 8001`
+- Kill existing process: `lsof -ti:8000 | xargs kill -9`
+
+**Import Errors:**
+- Ensure virtual environment is activated
+- Reinstall dependencies: `pip install -r requirements.txt`
+
+**Authentication Issues:**
+- Check JWT secret key in .env file
+- Ensure token is properly formatted: `Bearer <token>`
+- Verify token hasn't expired (30 minutes default)
+
+### Platform-Specific Notes
+
+**macOS:**
+- Use `python3` instead of `python` if both versions are installed
+- MongoDB service: `brew services start/stop mongodb-community`
+
+**Windows:**
+- Use `python` command (usually works after proper installation)
+- MongoDB service: Use Services panel or `net start MongoDB`
+- Path separators: Use backslashes in Windows paths
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and test thoroughly
+4. Commit changes: `git commit -m "Description of changes"`
+5. Push to branch: `git push origin feature-name`
+6. Create a Pull Request
 
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Support
+
+For issues and questions:
+- Create an issue in the GitHub repository
+- Check the interactive API documentation at /docs
+- Review the test files for usage examples

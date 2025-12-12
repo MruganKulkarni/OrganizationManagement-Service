@@ -12,7 +12,7 @@ class OrganizationCreate(BaseModel):
     """Model for creating a new organization."""
     organization_name: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, max_length=72)
     
     @validator('organization_name')
     def validate_organization_name(cls, v):
@@ -33,13 +33,21 @@ class OrganizationUpdate(BaseModel):
     """Model for updating an organization."""
     organization_name: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, max_length=72)
     
     @validator('organization_name')
     def validate_organization_name(cls, v):
-        if not re.match(r'^[a-zA-Z0-9_]+$', v):
-            raise ValueError('Organization name can only contain letters, numbers, and underscores')
+        if not ValidationUtils.is_valid_organization_name(v):
+            raise ValueError('Organization name must be 3-50 characters and contain only letters, numbers, and underscores')
         return v.lower()
+    
+    @validator('password')
+    def validate_password(cls, v):
+        password_check = ValidationUtils.is_strong_password(v)
+        if not password_check['is_strong']:
+            suggestions = ', '.join(password_check['suggestions'])
+            raise ValueError(f'Password is too weak. {suggestions}')
+        return v
 
 
 class OrganizationGet(BaseModel):
@@ -55,7 +63,7 @@ class OrganizationDelete(BaseModel):
 class AdminLogin(BaseModel):
     """Model for admin login."""
     email: EmailStr
-    password: str
+    password: str = Field(..., max_length=72)
 
 
 class OrganizationResponse(BaseModel):
