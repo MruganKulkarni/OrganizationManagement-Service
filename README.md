@@ -2,6 +2,8 @@
 
 A multi-tenant organization management system built with FastAPI and MongoDB. This service provides REST APIs for creating and managing organizations with secure authentication and dynamic data isolation.
 
+Deployed at : https://organization-management-service-ngc.vercel.app/docs
+
 ## Key Features
 
 ### Core Functionality
