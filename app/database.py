@@ -34,13 +34,13 @@ class DatabaseManager:
     
     def disconnect(self) -> None:
         """Close MongoDB connection."""
-        if self.client:
+        if self.client is not None:
             self.client.close()
             logger.info("Disconnected from MongoDB")
     
     def get_master_db(self) -> Database:
         """Get the master database instance."""
-        if not self.master_db:
+        if self.master_db is None:
             raise RuntimeError("Database not connected")
         return self.master_db
     
