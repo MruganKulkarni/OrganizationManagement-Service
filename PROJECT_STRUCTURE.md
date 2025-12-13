@@ -1,4 +1,4 @@
-# 📁 Project Structure Overview
+#  Project Structure Overview
 
 This document provides a comprehensive overview of the Organization Management Service project structure.
 
