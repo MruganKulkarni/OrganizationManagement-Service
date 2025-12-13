@@ -2,7 +2,7 @@
 
 This document provides a comprehensive overview of the Organization Management Service project structure.
 
-## 🏗️ Directory Structure
+##  Directory Structure
 
 ```
 OrganizationManagement-Service/
