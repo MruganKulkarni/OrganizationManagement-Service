@@ -6,55 +6,55 @@ This document provides a comprehensive overview of the Organization Management S
 
 ```
 OrganizationManagement-Service/
-├── 📄 README.md                    # Main project documentation
-├── 📄 LICENSE                      # MIT License
-├── 📄 requirements.txt             # Python dependencies
-├── 📄 .env.example                 # Environment template
-├── 📄 .env                         # Environment configuration
-├── 📄 .gitignore                   # Git ignore rules
-├── 📄 Dockerfile                   # Docker container configuration
-├── 📄 docker-compose.yml           # Docker Compose setup
-├── 📄 mongo-init.js                # MongoDB initialization script
-├── 📄 pytest.ini                   # Pytest configuration
-├── 📄 production.env               # Production environment template
-├── 📄 DEPLOYMENT_CHECKLIST.md      # Production deployment checklist
-├── 📄 FEATURES_SHOWCASE.md         # Feature highlights
-├── 📄 PROJECT_STRUCTURE.md         # This file
-├── 📄 test_integration.py          # Integration tests
-├── 📄 test_comprehensive.py        # Comprehensive API tests
+├──  README.md                    # Main project documentation
+├──  LICENSE                      # MIT License
+├──  requirements.txt             # Python dependencies
+├──  .env.example                 # Environment template
+├──  .env                         # Environment configuration
+├──  .gitignore                   # Git ignore rules
+├──  Dockerfile                   # Docker container configuration
+├──  docker-compose.yml           # Docker Compose setup
+├──  mongo-init.js                # MongoDB initialization script
+├──  pytest.ini                   # Pytest configuration
+├──  production.env               # Production environment template
+├──  DEPLOYMENT_CHECKLIST.md      # Production deployment checklist
+├──  FEATURES_SHOWCASE.md         # Feature highlights
+├──  PROJECT_STRUCTURE.md         # This file
+├──  test_integration.py          # Integration tests
+├──  test_comprehensive.py        # Comprehensive API tests
 │
-├── 📁 app/                         # Main application package
-│   ├── 📄 __init__.py             # Package initialization
-│   ├── 📄 main.py                 # FastAPI application entry point
-│   ├── 📄 config.py               # Configuration management
-│   ├── 📄 database.py             # Database connection and operations
-│   ├── 📄 models.py               # Pydantic models and validation
-│   ├── 📄 auth.py                 # Authentication and JWT handling
-│   ├── 📄 services.py             # Business logic services
-│   ├── 📄 middleware.py           # Custom middleware components
-│   ├── 📄 utils.py                # Utility functions and helpers
+├──  app/                         # Main application package
+│   ├──  __init__.py             # Package initialization
+│   ├──  main.py                 # FastAPI application entry point
+│   ├──  config.py               # Configuration management
+│   ├──  database.py             # Database connection and operations
+│   ├──  models.py               # Pydantic models and validation
+│   ├──  auth.py                 # Authentication and JWT handling
+│   ├──  services.py             # Business logic services
+│   ├──  middleware.py           # Custom middleware components
+│   ├──  utils.py                # Utility functions and helpers
 │   │
-│   └── 📁 routers/                # API route handlers
-│       ├── 📄 __init__.py         # Router package initialization
-│       ├── 📄 organizations.py    # Organization management endpoints
-│       ├── 📄 auth.py             # Authentication endpoints
-│       ├── 📄 health.py           # Health monitoring endpoints
-│       └── 📄 analytics.py        # Analytics and monitoring endpoints
+│   └──  routers/                # API route handlers
+│       ├──  __init__.py         # Router package initialization
+│       ├──  organizations.py    # Organization management endpoints
+│       ├──  auth.py             # Authentication endpoints
+│       ├──  health.py           # Health monitoring endpoints
+│       └──  analytics.py        # Analytics and monitoring endpoints
 │
-├── 📁 tests/                      # Test suite
-│   ├── 📄 __init__.py             # Test package initialization
-│   ├── 📄 test_organizations.py   # Organization endpoint tests
-│   └── 📄 test_auth.py            # Authentication tests
+├──  tests/                      # Test suite
+│   ├──  __init__.py             # Test package initialization
+│   ├──  test_organizations.py   # Organization endpoint tests
+│   └──  test_auth.py            # Authentication tests
 │
-├── 📁 docs/                       # Documentation
-│   ├── 📄 API_EXAMPLES.md         # Comprehensive API usage examples
-│   └── 📄 DEPLOYMENT.md           # Deployment guide for multiple platforms
+├──  docs/                       # Documentation
+│   ├──  API_EXAMPLES.md         # Comprehensive API usage examples
+│   └──  DEPLOYMENT.md           # Deployment guide for multiple platforms
 │
-└── 📁 scripts/                    # Utility scripts
-    └── 📄 start.sh                # Application startup script
+└──  scripts/                    # Utility scripts
+    └──  start.sh                # Application startup script
 ```
 
-## 🔧 Core Components
+##  Core Components
 
 ### Application Core (`app/`)
 
@@ -179,7 +179,7 @@ GET    /analytics/performance    # Performance benchmarks
 - `pytest.ini`: Test configuration
 - `.gitignore`: Version control exclusions
 
-## 🎯 Key Design Patterns
+##  Key Design Patterns
 
 ### 1. **Layered Architecture**
 ```
@@ -213,7 +213,7 @@ Data Storage (MongoDB)
 - Reusable across different endpoints
 - Clear separation from presentation layer
 
-## 🔄 Data Flow
+##  Data Flow
 
 ### 1. **Organization Creation Flow**
 ```
@@ -231,7 +231,7 @@ Protected Request → JWT Validation → Route Handler → Response
 Request → Auth Check → Service → Database Query → Metrics Calculation → Response
 ```
 
-## 🛡️ Security Architecture
+##  Security Architecture
 
 ### 1. **Input Validation**
 - Pydantic model validation
@@ -253,7 +253,7 @@ Request → Auth Check → Service → Database Query → Metrics Calculation �
 - Secure configuration management
 - Audit trail logging
 
-## 📊 Monitoring & Observability
+##  Monitoring & Observability
 
 ### 1. **Health Checks**
 - Application health endpoints
@@ -270,7 +270,7 @@ Request → Auth Check → Service → Database Query → Metrics Calculation �
 - Request counting
 - System resource monitoring
 
-## 🚀 Deployment Architecture
+##  Deployment Architecture
 
 ### 1. **Development**
 - Local MongoDB instance
